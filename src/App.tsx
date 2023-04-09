@@ -1,13 +1,18 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import logo from "./assets/logo_3rm.svg";
 import Header from "./components/Header";
+import ChatList from "./pages/ChatList";
+import ChatDetail from "./pages/ChatDetail";
 
 function App() {
   return (
-    <main>
+    <BrowserRouter>
       <Header />
-      <h1>Chats</h1>
-    </main>
+      <Routes>
+        <Route path="/chats" element={<ChatList />} />
+        <Route path="/chats/:id" element={<ChatDetail />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
