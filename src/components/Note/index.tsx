@@ -1,6 +1,12 @@
 import avatar from "../../assets/WebDev_Hyunchol_Jun.jpg";
 
-export default function Note({ children, name, time }) {
+interface NoteProps {
+  children: React.ReactNode;
+  name: string;
+  time: string;
+}
+
+export default function Note({ children, name, time }: NoteProps) {
   return (
     <div className="flex gap-3 items-start w-full">
       <div className="avatar">

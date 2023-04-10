@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <div className="navbar bg-white border-b border-gray-100 px-4">
       <div className="flex-1">
-        <a className="btn btn-ghost">
+        <a href="#" className="btn btn-ghost">
           <img className="w-12 h-12" src={logo} alt="logo" />
         </a>
       </div>

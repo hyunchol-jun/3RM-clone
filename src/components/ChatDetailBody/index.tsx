@@ -12,8 +12,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Icontext from "../IconText";
 import Participant from "../Participant";
 import Note from "../Note";
+import { User } from "../../interfaces";
 
-export default function ChatDetailBody() {
+interface ChatDetailBodyProps {
+  users?: User[];
+}
+
+export default function ChatDetailBody({ users }: ChatDetailBodyProps) {
   return (
     <div className="p-8 bg-slate-100 flex gap-8 h-full">
       <div className="flex flex-col gap-8 w-2/5">
@@ -32,11 +37,16 @@ export default function ChatDetailBody() {
             Active Participants
           </div>
           <div className="bg-white px-6 py-3 border-b">
-            <Participant name="Jocelyn Lubin" id="@jocelynlubin" />
-            <Participant name="Jan Rosend" id="@janrosen" />
-            <Participant name="Jacksonita" id="@jacksonrodriguez" />
-            <Participant name="AK @ 3RM" id="@AK" />
-            <Participant name="Ryan Gilly" id="@~Ryan~" />
+            {users &&
+              users.map((user) => (
+                <Participant
+                  key={user.id}
+                  name={`${user.first_name} ${user.last_name}`}
+                  id={`${
+                    user.username || `${user.first_name}_${user.last_name}`
+                  }`}
+                />
+              ))}
           </div>
           <div className="bg-white px-6 py-3 rounded-b-xl">
             Don't see everyone?&nbsp;
@@ -56,8 +66,11 @@ export default function ChatDetailBody() {
           <div className="flex items-center justify-between bg-white px-6 py-3 rounded-t-xl border-b">
             <span className="text-black text-xl ">Notes</span>
             <div className="flex gap-8">
-              <select className="bg-gray-100 border border-gray-200 rounded-2xl w-fit text-gray-600 p-1 focus:outline-none">
-                <option selected>All</option>
+              <select
+                className="bg-gray-100 border border-gray-200 rounded-2xl w-fit text-gray-600 p-1 focus:outline-none"
+                defaultValue="All"
+              >
+                <option>All</option>
                 <option>Today</option>
                 <option>This week</option>
               </select>
@@ -94,7 +107,7 @@ export default function ChatDetailBody() {
                 </div>
                 <textarea
                   className="bg-gray-100 border-2 border-gray-200 rounded-xl text-xl text-black p-4 pb-10 w-full"
-                  rows="2"
+                  rows={2}
                 />
               </div>
             </Note>
