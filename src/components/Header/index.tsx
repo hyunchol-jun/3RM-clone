@@ -1,13 +1,16 @@
+import { faTree } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import avatar from "../../assets/WebDev_Hyunchol_Jun.jpg";
-import logo from "../../assets/logo_3rm.svg";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
     <div className="navbar bg-white border-b border-gray-100 px-4">
       <div className="flex-1">
-        <a href="#" className="btn btn-ghost">
-          <img className="w-12 h-12" src={logo} alt="logo" />
-        </a>
+        <Link to="/chats" className="btn btn-ghost text-black text-2xl">
+          <FontAwesomeIcon icon={faTree} />
+          RM
+        </Link>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">

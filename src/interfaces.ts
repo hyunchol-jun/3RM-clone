@@ -19,7 +19,6 @@ export interface Chat {
   left: boolean;
   participants_count: number;
   photo?: {};
-  users?: User[];
 }
 
 export interface ChatFull {

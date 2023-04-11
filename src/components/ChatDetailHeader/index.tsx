@@ -4,12 +4,17 @@ import {
   faArrowUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { Chat } from "../../interfaces";
 
-export default function ChatDetailHeader() {
+interface ChatDetailHeader {
+  chat?: Chat;
+}
+
+export default function ChatDetailHeader({ chat }: ChatDetailHeader) {
   return (
     <div className="flex justify-between px-10 pb-4 border-b border-gray-200">
       <div className="flex gap-3">
-        <h1 className="text-black text-5xl">3RM X ACME Inc</h1>
+        <h1 className="text-black text-5xl">{chat && chat.title}</h1>
         <button className="flex gap-2.5 items-center text-blue-500 rounded-2xl border border-blue-500 bg-blue-50 px-3 py-0.5 h-fit">
           <FontAwesomeIcon icon={starFilled} className="w-3.5" />
           Favorite

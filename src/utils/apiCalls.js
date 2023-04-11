@@ -169,3 +169,46 @@ export function addChatUser(chat_id, user_id) {
     user_id,
   });
 }
+
+export function getUpdatesState() {
+  return api.call("updates.getState", {});
+}
+
+export function getUpdatesDifference() {
+  return api.call("updates.getDifference", {
+    date: 1681038944,
+    pts: 193,
+  });
+}
+
+export function sendMessageToChat() {
+  return api.call("messages.sendMessage", {
+    clear_draft: true,
+    peer: {
+      _: "inputPeerChat",
+      chat_id: "999359",
+    },
+    message: "Hello @mtproto_core",
+    entities: [
+      {
+        _: "messageEntityBold",
+        offset: 6,
+        length: 13,
+      },
+    ],
+
+    random_id:
+      Math.ceil(Math.random() * 0xffffff) + Math.ceil(Math.random() * 0xffffff),
+  });
+}
+
+export function getMessages() {
+  return api.call("messages.getMessages", {
+    id: [
+      {
+        _: "inputMessageID",
+        id: "100",
+      },
+    ],
+  });
+}

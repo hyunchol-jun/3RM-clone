@@ -13,12 +13,20 @@ import Icontext from "../IconText";
 import Participant from "../Participant";
 import Note from "../Note";
 import { User } from "../../interfaces";
+import { getMessages, sendMessageToChat } from "../../utils/apiCalls";
 
 interface ChatDetailBodyProps {
   users?: User[];
 }
 
 export default function ChatDetailBody({ users }: ChatDetailBodyProps) {
+  const handleSave = () => {
+    sendMessageToChat().then((res: any) =>
+      console.log("sendMessageResponse: ", res)
+    );
+    getMessages().then((res: any) => console.log("getMessages: ", res));
+  };
+
   return (
     <div className="p-8 bg-slate-100 flex gap-8 h-full">
       <div className="flex flex-col gap-8 w-2/5">
@@ -102,7 +110,9 @@ export default function ChatDetailBody({ users }: ChatDetailBodyProps) {
                   </div>
                   <div className="flex gap-3">
                     <button className="btn btn-ghost btn-sm">Cancel</button>
-                    <button className="btn btn-sm">Save</button>
+                    <button className="btn btn-sm" onClick={handleSave}>
+                      Save
+                    </button>
                   </div>
                 </div>
                 <textarea

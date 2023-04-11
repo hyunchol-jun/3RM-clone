@@ -25,6 +25,7 @@ function App() {
       setChats(res.chats);
     });
   }, []);
+  console.log(chats);
 
   return (
     <BrowserRouter>
