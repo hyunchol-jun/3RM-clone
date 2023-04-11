@@ -4,23 +4,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  getFullChat,
-  getUpdatesState,
-  getUpdatesDifference,
-} from "../../utils/apiCalls";
-import { ChatFull } from "../../interfaces";
+import { getHistory } from "../../utils/apiCalls";
+import { Messages } from "../../interfaces";
 
 export default function ChatDetail() {
-  const [chatFull, setChatFull] = useState<ChatFull | null>(null);
+  const [messages, setMessages] = useState<Messages | null>(null);
+  const onlyMessages = messages?.messages.filter(
+    (message) => message._ === "message"
+  );
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getFullChat(id).then((res: any) => setChatFull(res));
-    getUpdatesDifference().then((res: any) => console.log(res));
+    /* getFullChat(id).then((res: any) => setChatFull(res)); */
+    /* getUpdatesDifference().then((res: any) => */
+    /*   console.log("getUpdatesDifference: ", res) */
+    /* ); */
+    getHistory(id).then((res: any) => setMessages(res));
   }, [id]);
-  console.log(chatFull);
+  console.log("messages: ", messages);
   return (
     <main className="bg-white h-full pt-10">
       <div className="px-10 pb-6">
@@ -32,8 +34,8 @@ export default function ChatDetail() {
           Back
         </button>
       </div>
-      <ChatDetailHeader chat={chatFull?.chats[0]} />
-      <ChatDetailBody users={chatFull?.users} />
+      <ChatDetailHeader chat={messages?.chats[0]} />
+      <ChatDetailBody users={messages?.users} messages={onlyMessages} />
     </main>
   );
 }

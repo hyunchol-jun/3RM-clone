@@ -103,9 +103,9 @@ export async function loadUser() {
       const checkPasswordResult = await checkPassword({ srp_id, A, M1 });
     }
   }
-  console.log(user);
   localStorage.setItem("access_hash", user.users[0].access_hash);
   localStorage.setItem("user_id", user.users[0].id);
+  return user;
 }
 
 export function createChat(title) {
@@ -210,5 +210,14 @@ export function getMessages() {
         id: "100",
       },
     ],
+  });
+}
+
+export function getHistory(chatId) {
+  return api.call("messages.getHistory", {
+    peer: {
+      _: "inputPeerChat",
+      chat_id: chatId,
+    },
   });
 }

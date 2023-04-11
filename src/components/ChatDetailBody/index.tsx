@@ -12,14 +12,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Icontext from "../IconText";
 import Participant from "../Participant";
 import Note from "../Note";
-import { User } from "../../interfaces";
+import { User, Message } from "../../interfaces";
 import { getMessages, sendMessageToChat } from "../../utils/apiCalls";
 
 interface ChatDetailBodyProps {
   users?: User[];
+  messages?: Message[];
 }
 
-export default function ChatDetailBody({ users }: ChatDetailBodyProps) {
+export default function ChatDetailBody({
+  users,
+  messages,
+}: ChatDetailBodyProps) {
   const handleSave = () => {
     sendMessageToChat().then((res: any) =>
       console.log("sendMessageResponse: ", res)
@@ -121,18 +125,18 @@ export default function ChatDetailBody({ users }: ChatDetailBodyProps) {
                 />
               </div>
             </Note>
-            <Note name="James Nicholls" time="24m ago">
-              <p className="text-black text-xl">
-                Asked Jocelyn if she's at{" "}
-                <a className="underline text-blue-500">rAAVE Bogota</a>, she
-                said no
-              </p>
-            </Note>
-            <Note name="You" time="Monday">
-              <p className="text-black text-xl">
-                Reached out through Aleo's Discord, booked demo for Monday
-              </p>
-            </Note>
+            {messages &&
+              messages.map((message) => {
+                return (
+                  <Note
+                    name={message.from_id.user_id!}
+                    time={message.date.toString()}
+                    key={message.id}
+                  >
+                    <p className="text-black text-xl">{message.message}</p>
+                  </Note>
+                );
+              })}
           </div>
         </div>
       </div>

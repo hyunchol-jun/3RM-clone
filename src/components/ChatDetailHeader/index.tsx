@@ -6,11 +6,11 @@ import {
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { Chat } from "../../interfaces";
 
-interface ChatDetailHeader {
+interface ChatDetailHeaderProps {
   chat?: Chat;
 }
 
-export default function ChatDetailHeader({ chat }: ChatDetailHeader) {
+export default function ChatDetailHeader({ chat }: ChatDetailHeaderProps) {
   return (
     <div className="flex justify-between px-10 pb-4 border-b border-gray-200">
       <div className="flex gap-3">

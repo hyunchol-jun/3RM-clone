@@ -16,10 +16,11 @@ import {
   getFullChat,
 } from "./utils/apiCalls.js";
 
-loadUser();
+const user = loadUser();
 
 function App() {
   const [chats, setChats] = useState<Chat[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     getAllChats().then((res: any) => {
       setChats(res.chats);
