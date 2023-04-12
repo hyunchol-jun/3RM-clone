@@ -10,9 +10,10 @@ import { User } from "../../interfaces";
 
 interface ChatDetailProps {
   user: User | null;
+  userPhoto: {} | null;
 }
 
-export default function ChatDetail({ user }: ChatDetailProps) {
+export default function ChatDetail({ user, userPhoto }: ChatDetailProps) {
   const [messages, setMessages] = useState<Messages | null>(null);
   const onlyMessages = messages?.messages.filter(
     (message) => message._ === "message"
@@ -45,6 +46,7 @@ export default function ChatDetail({ user }: ChatDetailProps) {
         messages={onlyMessages}
         loggedInUser={user}
         chatId={id!}
+        userPhoto={userPhoto}
       />
     </main>
   );

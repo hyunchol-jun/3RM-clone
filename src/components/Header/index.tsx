@@ -1,6 +1,5 @@
 import { faTree } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import avatar from "../../assets/WebDev_Hyunchol_Jun.jpg";
 import { Link } from "react-router-dom";
 
 interface HeaderProps {

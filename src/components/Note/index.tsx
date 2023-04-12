@@ -1,17 +1,20 @@
-import avatar from "../../assets/WebDev_Hyunchol_Jun.jpg";
-
 interface NoteProps {
   children: React.ReactNode;
   name: string;
   time: string;
+  photo: {} | null;
 }
 
-export default function Note({ children, name, time }: NoteProps) {
+export default function Note({ children, name, time, photo }: NoteProps) {
+  const profileImage =
+    photo instanceof Uint8Array
+      ? URL.createObjectURL(new Blob([photo.buffer], { type: "image/png" }))
+      : undefined;
   return (
     <div className="flex gap-3 items-start w-full">
       <div className="avatar">
         <div className="w-6 rounded-full">
-          <img src={avatar} alt="" />
+          <img src={profileImage} alt="" />
         </div>
       </div>
       <div className="flex flex-col w-full">
