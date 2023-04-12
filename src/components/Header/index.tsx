@@ -3,7 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import avatar from "../../assets/WebDev_Hyunchol_Jun.jpg";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+interface HeaderProps {
+  photo: any;
+}
+
+export default function Header({ photo }: HeaderProps) {
+  const profileImage =
+    photo instanceof Uint8Array
+      ? URL.createObjectURL(new Blob([photo.buffer], { type: "image/png" }))
+      : undefined;
   return (
     <div className="navbar bg-white border-b border-gray-100 px-4">
       <div className="flex-1">
@@ -20,7 +28,7 @@ export default function Header() {
               className="btn btn-ghost btn-circle avatar z-10 focus:outline-none"
             >
               <div className="w-10 rounded-full">
-                <img src={avatar} alt="" />
+                <img src={profileImage} alt="" />
               </div>
             </label>
             <div className="btn btn-ghost btn-circle avatar placeholder border-white">

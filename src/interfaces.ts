@@ -14,7 +14,7 @@ export interface User {
   id: string;
   phone: string;
   self: boolean;
-  photo: UserProfilePhoto;
+  photo: any;
 }
 
 export interface Chat {

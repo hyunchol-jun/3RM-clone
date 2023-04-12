@@ -14,7 +14,7 @@ async function getUser() {
   }
 }
 
-function sendCode(phone) {
+export function sendCode(phone) {
   return api.call("auth.sendCode", {
     phone_number: phone,
     settings: {
@@ -58,8 +58,8 @@ function checkPassword({ srp_id, A, M1 }) {
 export async function loadUser() {
   const user = await getUser();
 
-  const phone = "9996612348";
-  const code = "11111";
+  const phone = "+14374730271";
+  const code = "10130";
 
   if (!user) {
     const { phone_code_hash } = await sendCode(phone);
@@ -119,28 +119,6 @@ export function createChat(title) {
   });
 }
 
-export function sendMessage(chatId) {
-  return api.call("messages.sendMessage", {
-    clear_draft: true,
-
-    peer: {
-      _: "inputPeerChat",
-      chat_id: chatId,
-    },
-    message: "Hello @mtproto_core",
-    entities: [
-      {
-        _: "messageEntityBold",
-        offset: 6,
-        length: 13,
-      },
-    ],
-
-    random_id:
-      Math.ceil(Math.random() * 0xffffff) + Math.ceil(Math.random() * 0xffffff),
-  });
-}
-
 export function getChats(chatIds) {
   return api.call("messages.getChats", {
     id: chatIds,
@@ -181,21 +159,15 @@ export function getUpdatesDifference() {
   });
 }
 
-export function sendMessageToChat() {
+export function sendMessageToChat(chatId, message) {
   return api.call("messages.sendMessage", {
     clear_draft: true,
     peer: {
       _: "inputPeerChat",
-      chat_id: "999359",
+      chat_id: chatId,
     },
-    message: "Hello @mtproto_core",
-    entities: [
-      {
-        _: "messageEntityBold",
-        offset: 6,
-        length: 13,
-      },
-    ],
+    message: message,
+    entities: [],
 
     random_id:
       Math.ceil(Math.random() * 0xffffff) + Math.ceil(Math.random() * 0xffffff),
@@ -219,5 +191,28 @@ export function getHistory(chatId) {
       _: "inputPeerChat",
       chat_id: chatId,
     },
+  });
+}
+
+export function getUserPhotos(userId) {
+  return api.call("photos.getUserPhotos", {
+    user_id: {
+      _: "inputUser",
+      user_id: userId,
+    },
+  });
+}
+
+export function downloadPhoto(userId, fileId) {
+  return api.call("upload.getFile", {
+    location: {
+      _: "inputPeerPhotoFileLocation",
+      peer: {
+        _: "inputPeerUser",
+        user_id: userId,
+      },
+      photo_id: fileId,
+    },
+    limit: 1024 * 1024,
   });
 }

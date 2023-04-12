@@ -8,32 +8,47 @@ import { User, Chat } from "./interfaces";
 import {
   loadUser,
   createChat,
-  sendMessage,
   getState,
   addChatUser,
   getChats,
   getAllChats,
   getFullChat,
+  sendCode,
+  getUserPhotos,
+  downloadPhoto,
 } from "./utils/apiCalls.js";
-
-const user = loadUser();
 
 function App() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     getAllChats().then((res: any) => {
+      console.log("response: ", res);
       setChats(res.chats);
     });
+    loadUser().then((res: any) => {
+      setUser(res.users[0]);
+    });
   }, []);
-  console.log(chats);
+  console.log("chats: ", chats);
+  console.log("user: ", user);
+  user &&
+    getUserPhotos(user.id)
+      .then((res: any) => {
+        console.log(res.photos[0]);
+        return downloadPhoto(user.id, res.photos[0].id);
+      })
+      .then((res: any) => {
+        setUser({ ...user, photo: res.bytes });
+        console.log("bytes: ", res.bytes);
+      });
 
   return (
     <BrowserRouter>
-      <Header />
+      <Header photo={user && user.photo} />
       <Routes>
         <Route path="/chats" element={<ChatList chats={chats} />} />
-        <Route path="/chats/:id" element={<ChatDetail />} />
+        <Route path="/chats/:id" element={<ChatDetail user={user} />} />
       </Routes>
     </BrowserRouter>
   );

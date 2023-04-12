@@ -6,7 +6,6 @@ class API {
     this.mtproto = new MTProto({
       api_id: process.env.REACT_APP_API_ID,
       api_hash: process.env.REACT_APP_API_HASH,
-      test: true,
     });
   }
 

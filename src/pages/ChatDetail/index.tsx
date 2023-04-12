@@ -6,8 +6,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getHistory } from "../../utils/apiCalls";
 import { Messages } from "../../interfaces";
+import { User } from "../../interfaces";
 
-export default function ChatDetail() {
+interface ChatDetailProps {
+  user: User | null;
+}
+
+export default function ChatDetail({ user }: ChatDetailProps) {
   const [messages, setMessages] = useState<Messages | null>(null);
   const onlyMessages = messages?.messages.filter(
     (message) => message._ === "message"
@@ -35,7 +40,12 @@ export default function ChatDetail() {
         </button>
       </div>
       <ChatDetailHeader chat={messages?.chats[0]} />
-      <ChatDetailBody users={messages?.users} messages={onlyMessages} />
+      <ChatDetailBody
+        users={messages?.users}
+        messages={onlyMessages}
+        loggedInUser={user}
+        chatId={id!}
+      />
     </main>
   );
 }

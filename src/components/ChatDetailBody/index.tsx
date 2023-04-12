@@ -13,23 +13,34 @@ import Icontext from "../IconText";
 import Participant from "../Participant";
 import Note from "../Note";
 import { User, Message } from "../../interfaces";
-import { getMessages, sendMessageToChat } from "../../utils/apiCalls";
+import { sendMessageToChat, getUserPhotos } from "../../utils/apiCalls";
+import { useState } from "react";
 
 interface ChatDetailBodyProps {
   users?: User[];
   messages?: Message[];
+  loggedInUser: User | null;
+  chatId: string;
 }
 
 export default function ChatDetailBody({
+  loggedInUser,
   users,
   messages,
+  chatId,
 }: ChatDetailBodyProps) {
-  const handleSave = () => {
-    sendMessageToChat().then((res: any) =>
-      console.log("sendMessageResponse: ", res)
+  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("target value: ", e.currentTarget.content.value);
+    sendMessageToChat(chatId, e.currentTarget.content.value).then(
+      (res: any) => {
+        console.log("sendMessageResponse: ", res);
+      }
     );
-    getMessages().then((res: any) => console.log("getMessages: ", res));
+    e.currentTarget.reset();
   };
+  const [isEditorShown, setIsEditorShown] = useState(false);
+  console.log("users: ", users);
 
   return (
     <div className="p-8 bg-slate-100 flex gap-8 h-full">
@@ -86,51 +97,69 @@ export default function ChatDetailBody({
                 <option>Today</option>
                 <option>This week</option>
               </select>
-              <button className="bg-white border border-gray-200 rounded-xl text-gray-400 px-3 py-0.5">
+              <button
+                className="bg-white border border-gray-200 rounded-xl text-gray-400 px-3 py-0.5"
+                onClick={() => setIsEditorShown(true)}
+              >
                 <span className="text-gray-500 text-lg">+</span>&nbsp;&nbsp;Add
               </button>
             </div>
           </div>
           <div className="flex flex-col gap-4 bg-white px-6 py-6 rounded-b-xl">
-            <Note name="You" time="Just now">
-              <div className="relative">
-                <div className="absolute w-full pl-2 pr-6 bottom-2 flex items-center justify-between">
-                  <div className="flex text-gray-500">
-                    <button className="btn btn-square btn-ghost w-8 h-8">
-                      <FontAwesomeIcon icon={faBold} />
-                    </button>
-                    <button className="btn btn-square btn-ghost w-8 h-8">
-                      <FontAwesomeIcon icon={faItalic} />
-                    </button>
-                    <button className="btn btn-square btn-ghost w-8 h-8">
-                      <FontAwesomeIcon icon={faStrikethrough} />
-                    </button>
-                    <button className="btn btn-square btn-ghost w-8 h-8">
-                      <FontAwesomeIcon icon={faFaceSmile} />
-                    </button>
-                    <button className="btn btn-square btn-ghost w-8 h-8">
-                      <FontAwesomeIcon icon={faLink} />
-                    </button>
+            {isEditorShown && (
+              <Note name="You" time="Just now">
+                <form className="relative" onSubmit={(e) => handleSave(e)}>
+                  <div className="absolute w-full pl-2 pr-6 bottom-2 flex items-center justify-between">
+                    <div className="flex text-gray-500">
+                      <button className="btn btn-square btn-ghost w-8 h-8">
+                        <FontAwesomeIcon icon={faBold} />
+                      </button>
+                      <button className="btn btn-square btn-ghost w-8 h-8">
+                        <FontAwesomeIcon icon={faItalic} />
+                      </button>
+                      <button className="btn btn-square btn-ghost w-8 h-8">
+                        <FontAwesomeIcon icon={faStrikethrough} />
+                      </button>
+                      <button className="btn btn-square btn-ghost w-8 h-8">
+                        <FontAwesomeIcon icon={faFaceSmile} />
+                      </button>
+                      <button className="btn btn-square btn-ghost w-8 h-8">
+                        <FontAwesomeIcon icon={faLink} />
+                      </button>
+                    </div>
+                    <div className="flex gap-3">
+                      <button
+                        className="btn btn-ghost btn-sm"
+                        onClick={() => setIsEditorShown(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button className="btn btn-sm">Save</button>
+                    </div>
                   </div>
-                  <div className="flex gap-3">
-                    <button className="btn btn-ghost btn-sm">Cancel</button>
-                    <button className="btn btn-sm" onClick={handleSave}>
-                      Save
-                    </button>
-                  </div>
-                </div>
-                <textarea
-                  className="bg-gray-100 border-2 border-gray-200 rounded-xl text-xl text-black p-4 pb-10 w-full"
-                  rows={2}
-                />
-              </div>
-            </Note>
+                  <textarea
+                    className="bg-gray-100 border-2 border-gray-200 rounded-xl text-xl text-black p-4 pb-10 w-full"
+                    rows={2}
+                    name="content"
+                  />
+                </form>
+              </Note>
+            )}
             {messages &&
               messages.map((message) => {
+                const foundUser = users
+                  ? users.find((user) => user.id === message.from_id.user_id)
+                  : null;
                 return (
                   <Note
-                    name={message.from_id.user_id!}
-                    time={message.date.toString()}
+                    name={
+                      !foundUser
+                        ? ""
+                        : foundUser.id === loggedInUser!.id
+                        ? "You"
+                        : `${foundUser.first_name}`
+                    }
+                    time={new Date(message.date * 1000).toLocaleString()}
                     key={message.id}
                   >
                     <p className="text-black text-xl">{message.message}</p>
