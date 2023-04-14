@@ -29,7 +29,7 @@ export default function ListItem({ chat }: ListItemProps) {
   return (
     <div
       onClick={() => handleListItemClick(chat.id)}
-      className="w-full flex border-b py-3 px-12 items-center text-lg"
+      className="w-full flex border-b py-3 px-12 items-center text-lg cursor-pointer"
     >
       <div className="w-3/12 flex flex-col items-start">
         <span className="text-black">{chat.title}</span>

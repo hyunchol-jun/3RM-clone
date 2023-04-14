@@ -8,10 +8,11 @@ interface ListProps {
 }
 
 export default function List({ chats }: ListProps) {
+  const realChats = chats.filter((chat) => chat.participants_count > 0);
   return (
     <>
       <ListBar />
-      {chats.map((chat: Chat) => (
+      {realChats.map((chat: Chat) => (
         <ListItem key={chat.id} chat={chat} />
       ))}
     </>

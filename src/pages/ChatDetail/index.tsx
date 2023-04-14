@@ -30,7 +30,7 @@ export default function ChatDetail({ user, userPhoto }: ChatDetailProps) {
   }, [id]);
   console.log("messages: ", messages);
   return (
-    <main className="bg-white h-full pt-10">
+    <main className="bg-white h-screen pt-10">
       <div className="px-10 pb-6">
         <button
           onClick={() => navigate(-1)}
